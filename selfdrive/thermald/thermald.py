@@ -66,7 +66,8 @@ def read_thermal():
   return dat
 
 
-def setup_eon_fan():
+def 
+_fan():
   global LEON
 
   os.system("echo 2 > /sys/module/dwc3_msm/parameters/otg_switch")
@@ -109,33 +110,32 @@ def set_eon_fan(val):
     last_eon_fan_val = val
 
 
-# temp thresholds to control fan speed - high hysteresis
-_TEMP_THRS_H = [50., 65., 80., 10000]
-# temp thresholds to control fan speed - low hysteresis
-_TEMP_THRS_L = [42.5, 57.5, 72.5, 10000]
-# fan speed options
-_FAN_SPEEDS = [0, 16384, 32768, 65535]
-# max fan speed only allowed if battery is hot
-_BAT_TEMP_THERSHOLD = 45.
+## temp thresholds to control fan speed - high hysteresis
+#_TEMP_THRS_H = [50., 65., 80., 10000]
+## temp thresholds to control fan speed - low hysteresis
+#_TEMP_THRS_L = [42.5, 57.5, 72.5, 10000]
+## fan speed options
+#_FAN_SPEEDS = [0, 16384, 32768, 65535]
+## max fan speed only allowed if battery is hot
+#_BAT_TEMP_THERSHOLD = 45.
 
 
 def handle_fan_eon(max_cpu_temp, bat_temp, fan_speed, ignition):
-  new_speed_h = next(speed for speed, temp_h in zip(_FAN_SPEEDS, _TEMP_THRS_H) if temp_h > max_cpu_temp)
-  new_speed_l = next(speed for speed, temp_l in zip(_FAN_SPEEDS, _TEMP_THRS_L) if temp_l > max_cpu_temp)
-
-  if new_speed_h > fan_speed:
-    # update speed if using the high thresholds results in fan speed increment
-    fan_speed = new_speed_h
-  elif new_speed_l < fan_speed:
-    # update speed if using the low thresholds results in fan speed decrement
-    fan_speed = new_speed_l
-
-  if bat_temp < _BAT_TEMP_THERSHOLD:
-    # no max fan speed unless battery is hot
-    fan_speed = min(fan_speed, _FAN_SPEEDS[-2])
-
-  set_eon_fan(fan_speed // 16384)
-
+#  new_speed_h = next(speed for speed, temp_h in zip(_FAN_SPEEDS, _TEMP_THRS_H) if temp_h > max_cpu_temp)
+#  new_speed_l = next(speed for speed, temp_l in zip(_FAN_SPEEDS, _TEMP_THRS_L) if temp_l > max_cpu_temp)
+#
+#  if new_speed_h > fan_speed:
+#    # update speed if using the high thresholds results in fan speed increment
+#    fan_speed = new_speed_h
+#  elif new_speed_l < fan_speed:
+#    # update speed if using the low thresholds results in fan speed decrement
+#    fan_speed = new_speed_l
+#
+#  if bat_temp < _BAT_TEMP_THERSHOLD:
+#    # no max fan speed unless battery is hot
+#    fan_speed = min(fan_speed, _FAN_SPEEDS[-2])
+  set_eon_fan(65535 // 16384)
+  
   return fan_speed
 
 
@@ -416,12 +416,12 @@ def thermald_thread():
     should_start_prev = should_start
 
     # report to server once per minute
-    if (count % int(60. / DT_TRML)) == 0:
-      cloudlog.event("STATUS_PACKET",
-                     count=count,
-                     health=(health.to_dict() if health else None),
-                     location=(location.to_dict() if location else None),
-                     thermal=msg.to_dict())
+#    if (count % int(60. / DT_TRML)) == 0:
+#      cloudlog.event("STATUS_PACKET",
+#                     count=count,
+#                     health=(health.to_dict() if health else None),
+#                     location=(location.to_dict() if location else None),
+#                     thermal=msg.to_dict())
 
     count += 1
 
