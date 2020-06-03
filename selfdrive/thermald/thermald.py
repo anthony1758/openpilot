@@ -66,8 +66,8 @@ def read_thermal():
   return dat
 
 
-def 
-_fan():
+def setup_eon_fan():
+  
   global LEON
 
   os.system("echo 2 > /sys/module/dwc3_msm/parameters/otg_switch")
