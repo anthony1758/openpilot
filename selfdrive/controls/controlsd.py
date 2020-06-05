@@ -248,9 +248,9 @@ class Controls:
     if not self.enabled:
       self.mismatch_counter = 0
 
-    if not self.sm['health'].controlsAllowed and self.enabled:
-      self.mismatch_counter += 1
-
+#    if not self.sm['health'].controlsAllowed and self.enabled:
+#      self.mismatch_counter += 1
+#
     return CS
 
   def state_transition(self, CS):
